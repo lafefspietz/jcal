@@ -14,19 +14,47 @@
     <script src = "ecal-phase-s11.js"></script>
     <script src = "fghz.js"></script>
     <script src = "biaswave.js"></script>
-   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true,
+            processClass: "mathjax",
+            ignoreClass: "no-mathjax"
+            }
+        });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+    </script>   
 </head>
 <body>    
 <div id = "scroll">
     <div id = "qrcode"></div>
     <a href = "index.html">HOME</a>
+    <h1>JPA MODEL</h1>
     <table id = "controltable"></table>
-    <img src = "graphics/jpa-coax.svg">
+    <a href = "http://localhost:8888/notebooks/jcal/jpa-model.ipynb">jpa-model.ipynb</a>
+    <img src = "graphics/jpa-coax2.svg">
+    <p>
+        $$
+        L = L_0 + \frac{L_J^{min}}{|\cos{(2\pi\phi)}|}
+        $$
+    </p>
 </div>
 <style>
 body{
     overflow:hidden;
     font-family:arial;
+}
+table{
+    border:solid;
+    margin:auto;
+    font-size:1.3em;
+}
+table input{
+}
+H1{
+    text-align:center;
+    font-size:3em;
 }
 #scroll{
     position:absolute;
@@ -35,8 +63,22 @@ body{
     overflow:scroll;
     bottom:0px;
 }
+#scroll a{
+    text-align:center;
+    font-size:2em;
+    width:80%;
+    margin:auto;
+    display:block;
+    border:solid;
+    border-radius:0.5em;
+    border-width:0.5em;
+    color:blue;
+    margin-top:1em;
+    margin-bottom:0.5em;
+    overflow-x:scroll;
+}
 #scroll img{
-    max-width:50%;
+    max-width:90%;
     display:block;
     margin:auto;
 }
@@ -63,6 +105,10 @@ control.phi = 0.25;//flux bias in fractions of a flux quantumn
 loadcontrol();
 
 globalparam = "";
+
+if(innerWidth > innerHeight){
+    document.getElementById("scroll").style.right = (innerHeight - 4).toString() + "px";
+}
 
 function loadcontrol(){
     var httpc = new XMLHttpRequest();
@@ -179,55 +225,65 @@ function plotmodel(){
     strokeWeight(1);
     fill(0);
     textSize(30);
+    for(ghz = 4;ghz < 9;ghz++){
+        text(ghz.toString() + " GHz",map(ghz,fghz[0],fghz[fghz.length - 1],0,width) + 10,30);
+    }
+    text("0 deg",10,0.5*height - 15);
+    text("-90 deg",10,0.75*height - 15);
+    text("90 deg",10,0.25*height - 15);
     if(globalparam.length > 0){
         text(globalparam + " = " + control[globalparam],width/2,100);
     }
-    
+
 }
 
 function mouseWheel(event) {
-    if(!datatracemode){
-      if (event.delta > 0) {
-        if(globalparam.length > 0){
-            control[globalparam]  = 1.01*control[globalparam];
-            savecontrol();
+
+    if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
+        if(!datatracemode){
+          if (event.delta > 0) {
+            if(globalparam.length > 0){
+                control[globalparam]  = 1.01*control[globalparam];
+                savecontrol();
+            }
+          }
+          else {
+            if(globalparam.length > 0){
+                control[globalparam]  = control[globalparam]/1.01;
+                savecontrol();
+            }
+          }
         }
-      }
-      else {
-        if(globalparam.length > 0){
-            control[globalparam]  = control[globalparam]/1.01;
-            savecontrol();
+        else{
+          if (event.delta > 0) {
+            traceindex++;
+            if(traceindex > fghz.length - 1){
+                traceindex = 0;
+            }
+          }
+          else {
+            traceindex--;
+            if(traceindex < 0){
+                traceindex = fghz.length - 1;
+            }
+          }
+            
         }
+      
+      //update the current input table value
+      rows = document.getElementById("controltable").getElementsByTagName("TR");
+      for(var index = 0;index < rows.length;index++){
+          var localparam = rows[index].getElementsByTagName("TD")[0].innerHTML;
+          if(localparam == globalparam){
+              rows[index].getElementsByTagName("input")[0].value = control[globalparam];
+          }
       }
+      mousewheeltrigger = 1;
+      
+      // Uncomment to prevent any default behavior.
+      // return false;
     }
-    else{
-      if (event.delta > 0) {
-        traceindex++;
-        if(traceindex > fghz.length - 1){
-            traceindex = 0;
-        }
-      }
-      else {
-        traceindex--;
-        if(traceindex < 0){
-            traceindex = fghz.length - 1;
-        }
-      }
-        
-    }
-  
-  //update the current input table value
-  rows = document.getElementById("controltable").getElementsByTagName("TR");
-  for(var index = 0;index < rows.length;index++){
-      var localparam = rows[index].getElementsByTagName("TD")[0].innerHTML;
-      if(localparam == globalparam){
-          rows[index].getElementsByTagName("input")[0].value = control[globalparam];
-      }
-  }
-  mousewheeltrigger = 1;
-  
-  // Uncomment to prevent any default behavior.
-  // return false;
+
 }
 
 
