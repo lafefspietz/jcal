@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+
+   -->
+
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAPv/AAD4/wAA+38AAPufAAD77wAAA/AAAPvvAAD7nwAA+38AAPj/AAD7/wAA//8AAP//AAD//wAA" rel="icon" type="image/x-icon">
+
+   <title>JPA Experiment</title>    
+   <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true,
+            processClass: "mathjax",
+            ignoreClass: "no-mathjax"
+            }
+        });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+    </script>   
+</head>
+<body>    
+<div id = "scroll">
+    <div id = "qrcode"></div>
+    <a href = "index.html">HOME</a>
+    <h1>JPA EXPERIMENT</h1>
+    <div class = "metadata">
+        <h2>NOTES</h2>
+        <textarea id = "notes"></textarea>
+    </div>
+    <div class = "display">
+        <h2>PLOT CONTROL</h2>
+        <table id = "displaycontroltable">
+            <tr>
+                <td id = "phasebutton">PHASE</td>
+                <td id = "amplitudebutton">AMPLITUDE</td>
+            </TR>
+            <TR>
+                <td>SAVE PLOT</td>
+                <td>SAVE DATA</td>
+            </tr>
+        </table>
+    </div>
+    <div class = "instrument">
+        <H2>SWITCH CONTROL</H2>
+        <table id = "switchcontroltable">
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>SHORT</td>
+                <td>OPEN</td>
+                <td>LOAD</td>
+            </tr>
+        </table>
+    </div>
+    <div class = "instrument">
+        <h2>JPA FLUX BIAS CONTROL</h2>
+        <table>
+            <tr>
+                <td>V:</td>
+                <td>
+                    <input id = "vinput">
+                </td>
+                <td>
+                    V
+                </td>
+                <td>🎚️</td>
+            </tr>
+        </table>
+    </div>
+    <div class = "instrument">
+        <h2>JPA PUMP CONTROL</h2>
+        <table>
+            <tr>
+                <td>Frequency:</td>
+                <td>
+                    <input id = "pumpfinput">
+                </td>
+                <td>GHz</td>
+                <td>🎚️</td>
+            </tr>
+            <tr>
+                <td>Power:</td>
+                <td>
+                    <input id = "pumppinput">
+                </td>
+                <td>dBm</td>
+                <td>🎚️</td>
+            </tr>
+        </table>
+    </div>
+    <div class = "instrument">
+        <h2>VNA CONTROL</h2>
+        <table>
+            <tr>
+                <td>Start Frequency:</td>
+                <td>
+                    <input id = "fstartinput">
+                </td>
+                <td>GHz</td>
+            </tr>
+            <tr>
+                <td>Stop Frequency:</td>
+                <td>
+                    <input id = "fstopinput">
+                </td>
+                <td>GHz</td>
+            </tr>
+            <tr>
+                <td>Number of Points:</td>
+                <td>
+                    <input id = "numpointsinput">
+                </td>
+                <td>points</td>
+            </tr>
+            <tr>
+                <td>IF Bandwidth</td>
+                <td>
+                    <input id = "ifbwinput">
+                </td>
+                <td>Hz</td>
+            </tr>
+            <tr>
+                <td>Power:</td>
+                <td id = "lowpowerbutton">LOW</td>
+                <td id = "highpowerbutton">HIGH</td>
+            </tr>
+        </table>
+    </div>
+    <a href = "http://localhost:8888/notebooks/jcal/jpa-experiment.ipynb">jpa-experiment.ipynb</a>
+</div>
+<style>
+#switchcontroltable td{
+    border:solid;
+    padding:2px 5px 2px 5px;
+    cursor:pointer;
+    border-radius:5px;
+}
+#switchcontroltable td:hover{
+    background-color:green;
+}
+#switchcontroltable td:active{
+    background-color:yellow;
+}
+#displaycontroltable td{
+    border:solid;
+    padding:2px 5px 2px 5px;
+    cursor:pointer;
+    border-radius:5px;
+    border-width:4px;
+}
+#displaycontroltable td:hover{
+    background-color:green;
+}
+#displaycontroltable td:active{
+    background-color:yellow;
+}
+#lowpowerbutton{
+    border:solid;
+    cursor:pointer;
+    text-align:center;
+}
+#highpowerbutton{
+    border:solid;
+    cursor:pointer;
+    text-align:center;
+}
+#lowpowerbutton:hover{
+    background-color:green;
+}
+#highpowerbutton:hover{
+    background-color:green;
+}
+
+#notes{
+    border:solid;
+    display:block;
+    margin:auto;
+    width:90%;
+    height:10em;
+}
+.metadata{
+    border:solid;
+    border-color:green;   
+    max-width:90%;
+    margin:auto;
+    border-radius:1em;
+    border-width:4px;
+    padding-bottom:2em;
+    margin-top:1em;
+    margin-bottom:1em;
+    
+}
+.display{
+    border:solid;
+    border-color:red;   
+    max-width:90%;
+    margin:auto;
+    border-radius:1em;
+    border-width:4px;
+    padding-bottom:2em;
+    margin-top:1em;
+    margin-bottom:1em;
+}
+.instrument{
+    border:solid;
+    border-color:purple;
+    max-width:90%;
+    margin:auto;
+    border-radius:1em;
+    border-width:4px;
+    padding-bottom:2em;
+    margin-top:1em;
+    margin-bottom:1em;
+}
+body{
+    overflow:hidden;
+    font-family:arial;
+}
+table{
+    margin:auto;
+    font-size:1.3em;
+}
+table input{
+}
+H1{
+    text-align:center;
+    font-size:3em;
+}
+h2{
+    text-align:center;
+    font-size:2em;
+}
+#scroll{
+    position:absolute;
+    left:0px;
+    top:0px;
+    overflow:scroll;
+    bottom:0px;
+}
+#scroll a{
+    text-align:center;
+    font-size:2em;
+    width:80%;
+    margin:auto;
+    display:block;
+    border:solid;
+    border-radius:0.5em;
+    border-width:0.5em;
+    color:blue;
+    margin-top:1em;
+    margin-bottom:0.5em;
+    overflow-x:scroll;
+}
+#scroll img{
+    max-width:90%;
+    display:block;
+    margin:auto;
+}
+main{
+    position:absolute;
+    right:0px;
+    top:0px;
+    z-index:-2;
+}
+</style>
+<script>
+
+
+// load experiment-data.json and plot
+// save experiment-control.json to pass to jpa-experiment.ipynb
+
+globalkey = "";
+
+switchbuttons = document.getElementById("switchcontroltable").getElementsByTagName("TD");
+
+experiment_control = {};
+experiment_control.v = 0.0;
+experiment_control.switch = "o";
+experiment_control.pump_frequency = "12.0";//GHz
+experiment_control.pump_power = "-30.0";//dBm
+experiment_control.fstart = "4.0";//GHz
+experiment_control.fstop = "9.0";//GHz
+experiment_control.numpoints = 1000;
+experiment_control.ifbw = 500;//Hz
+experiment_control.vnapower = "low";
+
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        experiment_control = JSON.parse(this.responseText);
+        loadtables();
+    }
+};
+httpc.open("GET", "load-file.php?filename=experiment-control.json", true);
+httpc.send();    
+
+
+switchbuttons[0].onclick = function(){
+    experiment_control.switch = "1";
+    loadtables();
+}
+switchbuttons[1].onclick = function(){
+    experiment_control.switch = "2";
+    loadtables();
+}
+switchbuttons[2].onclick = function(){
+    experiment_control.switch = "3";
+    loadtables();
+}
+switchbuttons[3].onclick = function(){
+    experiment_control.switch = "4";
+    loadtables();
+}
+switchbuttons[4].onclick = function(){
+    experiment_control.switch = "5";
+    loadtables();
+}
+switchbuttons[5].onclick = function(){
+    experiment_control.switch = "6";
+    loadtables();
+}
+
+switchbuttons[6].onclick = function(){
+    experiment_control.switch = "s";
+    loadtables();
+}
+switchbuttons[7].onclick = function(){
+    experiment_control.switch = "o";
+    loadtables();
+}
+switchbuttons[8].onclick = function(){
+    experiment_control.switch = "l";
+    loadtables();
+}
+
+document.getElementById("lowpowerbutton").onclick = function(){
+    experiment_control.vnapower = "low";
+    loadtables();
+}
+document.getElementById("highpowerbutton").onclick = function(){
+    experiment_control.vnapower = "high";
+    loadtables();
+}
+
+document.getElementById("vinput").onchange = function(){
+    experiment_control.v = parseFloat(this.value);   
+    loadtables();
+}
+
+
+document.getElementById("pumpfinput").onchange = function(){
+    experiment_control.pump_frequency = parseFloat(this.value);   
+    loadtables();
+}
+document.getElementById("pumppinput").onchange = function(){
+    experiment_control.pump_power = parseFloat(this.value);   
+    loadtables();
+}
+
+document.getElementById("fstartinput").onchange = function(){
+    experiment_control.fstart = parseFloat(this.value);   
+    loadtables();
+}
+
+document.getElementById("fstopinput").onchange = function(){
+    experiment_control.fstop = parseFloat(this.value);   
+    loadtables();
+}
+
+document.getElementById("numpointsinput").onchange = function(){
+    experiment_control.numpoints = parseFloat(this.value);   
+    loadtables();
+}
+document.getElementById("ifbwinput").onchange = function(){
+    experiment_control.ifbw = parseFloat(this.value);   
+    loadtables();
+}
+
+document.getElementById("vinput").onclick = function(){
+    globalkey = "v";
+}
+document.getElementById("pumpfinput").onclick = function(){
+    globalkey = "pump_frequency";
+}
+document.getElementById("pumppinput").onclick = function(){
+    globalkey = "pump_power";
+}
+
+    
+function loadtables(){
+    for(var index = 0;index < switchbuttons.length;index++){
+        switchbuttons[index].style.borderColor = "black";
+        switchbuttons[index].style.color = "black";
+    }
+
+    if(experiment_control.switch == "s"){
+        switchbuttons[6].style.borderColor = "red";
+        switchbuttons[6].style.color = "red";
+    }
+    if(experiment_control.switch == "o"){
+        switchbuttons[7].style.borderColor = "red";
+        switchbuttons[7].style.color = "red";
+    }
+    if(experiment_control.switch == "l"){
+        switchbuttons[8].style.borderColor = "red";
+        switchbuttons[8].style.color = "red";
+    }
+    if(experiment_control.switch == "1"){
+        switchbuttons[0].style.borderColor = "red";
+        switchbuttons[0].style.color = "red";
+    }
+    if(experiment_control.switch == "2"){
+        switchbuttons[1].style.borderColor = "red";
+        switchbuttons[1].style.color = "red";
+    }
+    if(experiment_control.switch == "3"){
+        switchbuttons[2].style.borderColor = "red";
+        switchbuttons[2].style.color = "red";
+    }
+    if(experiment_control.switch == "4"){
+        switchbuttons[3].style.borderColor = "red";
+        switchbuttons[3].style.color = "red";
+    }
+    if(experiment_control.switch == "5"){
+        switchbuttons[4].style.borderColor = "red";
+        switchbuttons[4].style.color = "red";
+    }
+    if(experiment_control.switch == "6"){
+        switchbuttons[5].style.borderColor = "red";
+        switchbuttons[5].style.color = "red";
+    }
+    document.getElementById("vinput").value = experiment_control.v.toString();
+    document.getElementById("pumpfinput").value = experiment_control.pump_frequency.toString();
+    document.getElementById("pumppinput").value = experiment_control.pump_power.toString();
+    document.getElementById("fstartinput").value = experiment_control.fstart.toString();
+    document.getElementById("fstopinput").value = experiment_control.fstop.toString();    
+    document.getElementById("numpointsinput").value = experiment_control.numpoints.toString();
+    document.getElementById("ifbwinput").value = experiment_control.ifbw.toString();    
+
+    if(experiment_control.vnapower == "low"){
+        document.getElementById("lowpowerbutton").style.color = "red";
+        document.getElementById("lowpowerbutton").style.borderColor = "red";
+        document.getElementById("highpowerbutton").style.color = "black";
+        document.getElementById("highpowerbutton").style.borderColor = "black";
+    }    
+    if(experiment_control.vnapower == "high"){
+        document.getElementById("highpowerbutton").style.color = "red";
+        document.getElementById("highpowerbutton").style.borderColor = "red";
+        document.getElementById("lowpowerbutton").style.color = "black";
+        document.getElementById("lowpowerbutton").style.borderColor = "black";
+        
+    }    
+    savecontrol();
+}
+
+
+notes = "";
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        notes = this.responseText;
+        document.getElementById("notes").value = notes;  
+    }
+};
+httpc.open("GET", "load-file.php?filename=notes.txt", true);
+httpc.send();
+
+document.getElementById("notes").onkeyup = function() {
+    notes = this.value;
+    notesdata = encodeURIComponent(this.value);
+    var httpc = new XMLHttpRequest();
+    var url = "save-file.php";        
+    httpc.open("POST", url, true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+    httpc.send("data="+notesdata+"&filename=notes.txt");//send text to save-file.php   
+}
+
+displaymode = "amplitude";
+
+if(displaymode == "amplitude"){
+    document.getElementById("amplitudebutton").style.borderColor ="red";
+    document.getElementById("amplitudebutton").style.color ="red";
+}
+
+document.getElementById("amplitudebutton").onclick = function(){
+    displaymode = "amplitude"
+    document.getElementById("amplitudebutton").style.borderColor ="red";
+    document.getElementById("amplitudebutton").style.color ="red";
+    document.getElementById("phasebutton").style.borderColor ="black";
+    document.getElementById("phasebutton").style.color ="black";
+}
+document.getElementById("phasebutton").onclick = function(){
+    displaymode = "phase"
+    document.getElementById("amplitudebutton").style.borderColor ="black";
+    document.getElementById("amplitudebutton").style.color ="black";
+    document.getElementById("phasebutton").style.borderColor ="red";
+    document.getElementById("phasebutton").style.color ="red";
+}
+
+if(innerWidth > innerHeight){
+    document.getElementById("scroll").style.right = (innerHeight - 4).toString() + "px";
+}
+
+
+function setup() {
+    createCanvas(innerHeight,innerHeight);
+}
+function draw() {
+
+}
+
+
+function mouseWheel(event) {
+    if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
+        if (event.delta > 0) {
+            experiment_control[globalkey] *= 1.005;
+            loadtables();
+        }
+        else {
+            experiment_control[globalkey] /= 1.005;
+            loadtables();
+        }
+    }
+}
+
+function mouseClicked() {
+    if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
+           globalkey = "";
+    }
+}
+
+function keyPressed() {
+  if (key === 'd') {
+
+  }
+}
+
+
+
+function savecontrol(){
+    controldata = JSON.stringify(experiment_control,null,"   ");
+    var httpc = new XMLHttpRequest();
+    var url = "save-file.php";        
+    httpc.open("POST", url, true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+    httpc.send("data="+controldata+"&filename=experiment-control.json");//send text to save-file.php    
+}
+
+
+</script>
+</body>
+</html>
+
+
+    
+    

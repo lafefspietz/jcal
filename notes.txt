@@ -1,0 +1,10 @@
+JPA Experiment notes
+location:
+experiment start date:
+today's data:
+data repository url:
+experimenter:
+email:
+device:
+cryostat:
+temperature:
