@@ -19,6 +19,7 @@
  - [edit-text-files.html](edit-text-files.html)
  - [edit-web-files.html](edit-web-files.html)
  - [index.html](index.html)
+ - [jpa-experiment.html](jpa-experiment.html)
  - [jpa-model.html](jpa-model.html)
  - [list-files.html](list-files.html)
  - [organic-web-home.html](organic-web-home.html)
@@ -29,6 +30,7 @@
  - [read-markdown-files.html](read-markdown-files.html)
  - [read-markdown-latex-files.html](read-markdown-latex-files.html)
  - [read-text-files.html](read-text-files.html)
+ - [threepole.html](threepole.html)
 
 # CSS FILES
 
@@ -49,7 +51,9 @@
  - [biaswave.json](biaswave.json)
  - [control.json](control.json)
  - [dna.json](dna.json)
+ - [experiment-control.json](experiment-control.json)
  - [model.json](model.json)
+ - [threepole.json](threepole.json)
 
 # MARKDOWN FILES
 
@@ -58,6 +62,7 @@
 
 # TEXT FILES
 
+ - [notes.txt](notes.txt)
 
 # PHP FILES AS TEXT
 

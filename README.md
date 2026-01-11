@@ -1,5 +1,21 @@
 # [J Cal](github.com/LafeLabs/jcal)
 
+Variable impedance load calibration with Josephson Parametri Amplifiers.
+
+![](graphics/jpa-coax2.svg)
+
+$$
+S = S(f,\phi,[C_{in},C_0,L_0,I_c,])
+$$
+
+
+
+```
+jpa = cin_series_network**c_shunt_network**l_shunt_network**open_network
+```
+
+
+
 ## [index.html](index.html)
 ## [jpa-model.html](jpa-model.html)
 ## [dual-db-plot.html](dual-db-plot.html)

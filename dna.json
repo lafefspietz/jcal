@@ -18,6 +18,7 @@
         "edit-text-files.html",
         "edit-web-files.html",
         "index.html",
+        "jpa-experiment.html",
         "jpa-model.html",
         "list-files.html",
         "organic-web-home.html",
@@ -27,13 +28,16 @@
         "raw-phase-plot.html",
         "read-markdown-files.html",
         "read-markdown-latex-files.html",
-        "read-text-files.html"
+        "read-text-files.html",
+        "threepole.html"
     ],
     "json": [
         "biaswave.json",
         "control.json",
         "dna.json",
-        "model.json"
+        "experiment-control.json",
+        "model.json",
+        "threepole.json"
     ],
     "css": [
         "markdown.css"
@@ -51,7 +55,9 @@
         "README.md",
         "files.md"
     ],
-    "text": [],
+    "text": [
+        "notes.txt"
+    ],
     "php": [
         "branch.txt",
         "compile-php.txt",
