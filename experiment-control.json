@@ -1,13 +1,13 @@
 {
-   "v": 1.1900996980229601,
+   "v": 1.3018845006379345,
    "switch": "o",
-   "pump_frequency": 12.695368922000002,
+   "pump_frequency": 12.506826942488622,
    "pump_power": -36.81605787519661,
    "fstart": "4.0",
    "fstop": 9,
    "numpoints": 1000,
    "ifbw": 500,
-   "vnapower": "high",
+   "vnapower": "low",
    "": 0,
    "pump_amplitude": null
 }
