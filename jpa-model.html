@@ -232,7 +232,7 @@ function plotmodel(){
     text("-90 deg",10,0.75*height - 15);
     text("90 deg",10,0.25*height - 15);
     if(globalparam.length > 0){
-        text(globalparam + " = " + control[globalparam],width/2,100);
+        text(globalparam + " = " + control[globalparam].toPrecision(4),width/2,100);
     }
 
 }

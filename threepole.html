@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <!--
+
+   -->
+
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAPv/AAD4/wAA+38AAPufAAD77wAAA/AAAPvvAAD7nwAA+38AAPj/AAD7/wAA//8AAP//AAD//wAA" rel="icon" type="image/x-icon">
+
+   <title>THREE POLE LC CHAIN MODEL</title>    
+   <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true,
+            processClass: "mathjax",
+            ignoreClass: "no-mathjax"
+            }
+        });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+    </script>   
+</head>
+<body>    
+<img src = "graphics/threepole.svg">
+<table>
+    <tr>
+        <td>$L_1 = $</td>
+        <td>
+            <input id = "l1input">
+        </td>
+        <td>H</td>
+        <td>$Z_1 = \sqrt{\frac{L_1}{C_1}} = $</td>
+        <td>
+            <input id = "z1input">
+        </td>
+        <td>$\Omega$</td>
+    </tr>
+    <tr>
+        <td>$L_2 = $</td>
+        <td>
+            <input id = "l2input">
+        </td>
+        <td>H</td>
+        <td>$Z_2 = \sqrt{\frac{L_2}{C_2}} = $</td>
+        <td>
+            <input id = "z2input">
+        </td>
+        <td>$\Omega$</td>
+    </tr>
+    <tr>
+        <td>$L_3 = $</td>
+        <td>
+            <input id = "l3input">
+        </td>
+        <td>H</td>
+        <td>$Z_3 = \sqrt{\frac{L_3}{C_3}} = $</td>
+        <td>
+            <input id = "z3input">
+        </td>
+        <td>$\Omega$</td>
+    </tr>
+    <tr>
+        <td>$C_1 = $</td>
+        <td>
+            <input id = "c1input">
+        </td>
+        <td>F</td>
+        <td>$f_1 = \frac{1}{2\pi}\sqrt{\frac{1}{L_1C_1}} = $</td>
+        <td>
+            <input id = "f1input">
+        </td>
+        <td>GHz</td>
+    </tr>
+    <tr>
+        <td>$C_2 = $</td>
+        <td>
+            <input id = "c2input">
+        </td>
+        <td>F</td>
+        <td>$f_2 = \frac{1}{2\pi}\sqrt{\frac{1}{L_2C_2}} = $</td>
+        <td>
+            <input id = "f2input">
+        </td>
+        <td>GHz</td>
+    </tr>
+    <tr>
+        <td>$C_3 = $</td>
+        <td>
+            <input id = "c3input">
+        </td>
+        <td>F</td>
+        <td>$f_3 = \frac{1}{2\pi}\sqrt{\frac{1}{L_3C_3}} = $</td>
+        <td>
+            <input id = "f3input">
+        </td>
+        <td>GHz</td>
+    </tr>
+</table>
+<style>
+body{
+    overflow:hidden;
+}
+main{
+    position:absolute;
+    right:0px;
+    top:0px;
+    z-index:-2;
+}
+</style>
+<script>
+
+LORC = "L";//L or C
+poleindex = "1";//1, 2, or 3(strings)
+refdes = LORC + poleindex;
+
+components = {
+    "L1":1e-9,
+    "L2":1e-9,
+    "L3":1e-9,
+    "C1":0.4e-12,
+    "C2":0.4e-12,
+    "C3":0.4e-12
+};
+
+function setup() {
+    createCanvas(innerWidth,innerHeight);
+    plottrace();
+    
+}
+function draw() {
+  //fetch data
+  //plot data 
+//      plottrace();
+
+}
+
+
+function loadtable(){
+    document.getElementById("l1input").value = components.L1.toString();
+    z1 = Math.sqrt(components.L1/components.C1);
+    document.getElementById("z1input").value = z1.toString();
+
+    document.getElementById("l2input").value = components.L2.toString();
+    z2 = Math.sqrt(components.L2/components.C2);
+    document.getElementById("z2input").value = z2.toString();
+
+    document.getElementById("l3input").value = components.L3.toString();
+    z3 = Math.sqrt(components.L3/components.C3);
+    document.getElementById("z3input").value = z3.toString();
+
+    document.getElementById("c1input").value = components.C1.toString();
+    f1 = 1e-9*(1/(2*Math.PI))*Math.sqrt(1/(components.C1*components.L1));
+    document.getElementById("f1input").value = f1.toString();
+
+    document.getElementById("c2input").value = components.C2.toString();
+    f2 = 1e-9*(1/(2*Math.PI))*Math.sqrt(1/(components.C2*components.L2));
+    document.getElementById("f2input").value = f2.toString();
+
+    document.getElementById("c3input").value = components.C3.toString();
+    f3 = 1e-9*(1/(2*Math.PI))*Math.sqrt(1/(components.C3*components.L3));
+    document.getElementById("f3input").value = f3.toString();
+
+}
+
+function plottrace(){
+   savecomponents();
+   loadtable();
+
+   clear();
+   background("white");    
+   stroke("red");
+   strokeWeight(5);
+ 
+   line(0,0.25*height,width,0.25*height);
+   line(0,0.5*height,width,0.5*height);
+   line(0,0.75*height,width,0.75*height);
+   stroke("green")
+   for(var ghz = 4;ghz < 9;ghz++){
+        line(map(ghz,4,9,0,width),0,map(ghz,4,9,0,width),height);
+    }        
+    stroke("blue");
+
+    loadtrace(); 
+    
+    //open the .json file with the data, call it threepole-trace.json
+  
+}
+
+function loadtrace(){
+    var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            trace = JSON.parse(this.responseText);
+            console.log(this.responseText);
+            noFill();
+            beginShape();
+            for(var index = 0;index < trace.phase.length;index++){
+                    vertex(map(index,0,trace.fghz.length,0,width),map(trace.phase[index],-180,180,height,0));
+            }
+            endShape();
+    
+        }
+    };
+    httpc.open("GET", "load-file.php?filename=threepole-trace.json", true);
+    httpc.send();
+}
+
+function savecomponents(){
+    data = JSON.stringify(components,null,"   ");
+    var httpc = new XMLHttpRequest();
+    var url = "save-file.php";        
+    httpc.open("POST", url, true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+    httpc.send("data="+data+"&filename=threepole-components.json");//send text to save-file.php    
+}
+
+function mouseWheel(event) {
+    if (event.delta > 0) {
+        components[refdes] *= 1.04;
+    }
+    else {
+        components[refdes] /= 1.04;
+    }
+    plottrace();
+      // Uncomment to prevent any default behavior.
+      // return false;
+}
+
+
+function mouseClicked() {
+
+}
+
+function keyPressed() {
+  if (key === 'l') {
+    LORC = "L";//L or C
+    refdes = LORC + poleindex;
+  }
+  if (key === 'c') {
+    LORC = "C";//L or C
+    refdes = LORC + poleindex;
+  }
+  if (key === '1') {
+    poleindex = "1";//1, 2, or 3(strings)
+    refdes = LORC + poleindex;
+  }
+  if (key === '2') {
+    poleindex = "2";//1, 2, or 3(strings)
+    refdes = LORC + poleindex;
+  }
+  if (key === '3') {
+    poleindex = "3";//1, 2, or 3(strings)
+    refdes = LORC + poleindex;
+  }
+  if (key === 'p') {
+      plottrace();
+  }
+  
+
+  
+
+}
+</script>
+</body>
+</html>
+
+
+    
+    
