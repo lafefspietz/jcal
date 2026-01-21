@@ -1,0 +1,90 @@
+ <!doctype html>
+<html>
+<head>
+ <!-- 
+
+-->
+
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAPv/AAD4/wAA+38AAPufAAD77wAAA/AAAPvvAAD7nwAA+38AAPj/AAD7/wAA//8AAP//AAD//wAA" rel="icon" type="image/x-icon">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true,
+        processClass: "mathjax",
+        ignoreClass: "no-mathjax"
+        }
+    });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+</script>
+<script src = "ecaldata.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<title>ECAL</title>
+</head>
+<body>
+<div id = "qrcode"></div>
+<table id = "portselecttable">
+    <tr>
+        <td class = "button">1</td>
+        <td class = "button">2</td>
+        <td class = "button">3</td>
+        <td class = "button">4</td>
+        <td class = "button">5</td>
+        <td class = "button">6</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td class = "button">ECAL SHORT</td>
+        <TD class = "button">ECAL OPEN</TD>
+        <TD class = "button">ECAL LOAD</TD>
+    </tr>
+</table>
+<TABLE>
+    <TR>
+        <TD class = "button">PHASE/MAG</TD>
+        <TD class = "button">ECAL ON/OFF</TD>
+    </TR>
+</TABLE>
+<script>
+codesquaresize = 170;
+marginsize = 40;
+fontsize = 12;
+//globalurl = "http://www.trashrobot.org/qrcode.html";
+globalurl = window.location.href;
+qrcode = new QRCode(document.getElementById("qrcode"), {
+	text: globalurl,
+	width: codesquaresize,
+	height: codesquaresize,
+	colorDark : "#000000",
+	colorLight : "#ffffff",
+	correctLevel : QRCode.CorrectLevel.H
+});
+</script>
+<style>
+body{
+    font-family:Arial;
+}
+.button{
+    border:solid;
+    border-radius:1em;
+    font-size:2em;
+    padding:0.5em 0.5em 0.5em 0.5em;
+    border-width:5px;
+    cursor:pointer;
+}
+#portselecttable .button{
+    width:2.5em;
+    text-align:center;
+}
+.button:hover{
+    background-color:green;
+}
+.button:active{
+    background-color:yellow;
+}
+</style>
+
+</body>
+</html>
